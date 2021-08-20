@@ -1,0 +1,17 @@
+@echo off
+ECHO These commands will enable tracing:
+@echo on
+logman create trace "WinRM-Trace" -ow -o %0\..\WinRM-Trace-%COMPUTERNAME%.etl -p "Microsoft-Windows-WinRM" 0xffffffffffffffff 0xff -nb 16 16 -bs 1024 -mode Circular -f bincirc -max 2048 -ets
+
+@echo off
+echo
+ECHO Reproduce your issue and enter any key to stop tracing
+@echo on
+pause
+
+logman stop "WinRM-Trace" -ets
+tasklist /svc > %0\..\tasklist-%COMPUTERNAME%.txt
+
+@echo off
+echo Tracing has been captured, WMI-Trace.etl and tasklist.txt saved.
+pause
